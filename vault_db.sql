@@ -1,3 +1,5 @@
+-- Initialize the postgreSQL database template (using spring boot JDBC)
+
 drop database vaultdb;
 drop user vault;
 create user vault with password 'password';
@@ -6,7 +8,7 @@ create database vaultdb with template=template0 owner=vault;
 alter default privileges grant all on tables to vault;
 alter default privileges grant all on sequences to vault;
 
-create table et_users(
+create table users(
                          user_id integer primary key not null,
                          first_name varchar(20) not null,
                          last_name varchar(20) not null,
@@ -14,15 +16,16 @@ create table et_users(
                          password text not null
 );
 
-create table et_data(
+create table data(
                             data_id integer primary key not null,
                               user_id integer not null,
                               title varchar(20) not null,
-                              description varchar(50) not null
+                              message varchar(50) not null,
+                                type varchar(20) not null
 );
-alter table et_data add constraint data_users_fk
-    foreign key (user_id) references et_users(user_id);
+alter table data add constraint data_users_fk
+    foreign key (user_id) references users(user_id);
 
 
-create sequence et_users_seq increment 1 start 1;
-create sequence et_data_seq increment 1 start 1;
+create sequence users_seq increment 1 start 1;
+create sequence data_seq increment 1 start 1;
